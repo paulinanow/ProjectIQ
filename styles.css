@@ -199,6 +199,23 @@
     100% { transform: rotate(360deg); }
 }
 
+/* ID field styling */
+#taskId {
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+}
+
+/* Task ID display */
+.task-id {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.dark .task-id {
+    color: #9ca3af;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 6px;

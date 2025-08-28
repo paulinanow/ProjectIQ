@@ -150,6 +150,7 @@ class TaskManager {
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ID</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Task</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Priority</th>
@@ -197,6 +198,9 @@ class TaskManager {
         return `
             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-sm font-mono text-gray-600 dark:text-gray-400">${task.id}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
                     <div>
                         <div class="text-sm font-medium text-gray-900 dark:text-white">${task.title}</div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">${task.description || 'No description'}</div>
@@ -227,7 +231,10 @@ class TaskManager {
         return `
             <div class="task-card cursor-move" draggable="true" data-task-id="${task.id}">
                 <div class="flex items-start justify-between mb-2">
-                    <h4 class="text-sm font-medium text-gray-900 dark:text-white">${task.title}</h4>
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-900 dark:text-white">${task.title}</h4>
+                        <span class="text-xs font-mono text-gray-500 dark:text-gray-400">ID: ${task.id}</span>
+                    </div>
                     <span class="priority-badge priority-${task.priority}">${task.priority}</span>
                 </div>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">${task.description || 'No description'}</p>
@@ -317,6 +324,7 @@ class TaskManager {
         const modal = document.getElementById('taskModal');
         const title = document.getElementById('modalTitle');
         const form = document.getElementById('taskForm');
+        const idField = document.getElementById('taskId');
         
         title.textContent = this.editingTask ? 'Edit Task' : 'Add New Task';
         
@@ -325,8 +333,10 @@ class TaskManager {
             document.getElementById('taskDescription').value = this.editingTask.description || '';
             document.getElementById('taskPriority').value = this.editingTask.priority;
             document.getElementById('taskDueDate').value = this.editingTask.dueDate || '';
+            idField.value = this.editingTask.id;
         } else {
             form.reset();
+            idField.value = '';
         }
         
         modal.classList.remove('hidden');
@@ -387,7 +397,10 @@ class TaskManager {
     }
 
     generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        // Generate a numeric ID based on timestamp and random number
+        const timestamp = Date.now();
+        const random = Math.floor(Math.random() * 1000);
+        return timestamp + random;
     }
 
     saveToStorage() {
