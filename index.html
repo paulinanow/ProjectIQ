@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectIQ - Task Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="h-full bg-gray-50 dark:bg-gray-900">
+    <div id="app" class="h-full flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">ProjectIQ</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Task Manager</p>
+            </div>
+            
+            <nav class="mt-6">
+                <div class="px-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#backlog" 
+                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors"
+                               data-page="backlog">
+                                <i data-lucide="list-todo" class="w-5 h-5 mr-3"></i>
+                                Backlog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#board" 
+                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors"
+                               data-page="board">
+                                <i data-lucide="kanban" class="w-5 h-5 mr-3"></i>
+                                Board
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Dark mode toggle -->
+            <div class="absolute bottom-6 left-6">
+                <button id="darkModeToggle" 
+                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    <i data-lucide="moon" class="w-5 h-5 mr-3"></i>
+                    Dark Mode
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <main class="flex-1 overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <h2 id="pageTitle" class="text-xl font-semibold text-gray-900 dark:text-white">Backlog</h2>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input type="text" 
+                                   id="searchInput"
+                                   placeholder="Search tasks..." 
+                                   class="w-64 px-4 py-2 pl-10 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-gray-400"></i>
+                        </div>
+                        <button id="addTaskBtn" 
+                                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors">
+                            <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                            Add Task
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page content -->
+            <div id="pageContent" class="h-full overflow-auto p-6">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="taskModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 id="modalTitle" class="text-lg font-medium text-gray-900 dark:text-white">Add New Task</h3>
+                </div>
+                <form id="taskForm" class="px-6 py-4">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
+                            <input type="text" 
+                                   id="taskTitle" 
+                                   required
+                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                            <textarea id="taskDescription" 
+                                      rows="3"
+                                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Priority</label>
+                                <select id="taskPriority" 
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Due Date</label>
+                                <input type="date" 
+                                       id="taskDueDate"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" 
+                                id="cancelTaskBtn"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors">
+                            Save Task
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
