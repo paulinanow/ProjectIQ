@@ -8,13 +8,13 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="h-full bg-gray-50 dark:bg-gray-900">
+<body class="h-full">
     <div id="app" class="h-full flex">
         <!-- Sidebar -->
-        <aside class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
+        <aside class="w-64 border-r transition-all duration-300 ease-in-out">
             <div class="p-6">
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">ProjectIQ</h1>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Task Manager</p>
+                <h1 class="text-2xl font-bold transition-colors duration-300">ProjectIQ</h1>
+                <p class="text-sm mt-1 transition-colors duration-300">Task Manager</p>
             </div>
             
             <nav class="mt-6">
@@ -22,30 +22,64 @@
                     <ul class="space-y-2">
                         <li>
                             <a href="#backlog" 
-                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors"
+                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-300"
                                data-page="backlog">
                                 <i data-lucide="list-todo" class="w-5 h-5 mr-3"></i>
-                                Backlog
+                                                                 Backlog
                             </a>
                         </li>
                         <li>
                             <a href="#board" 
-                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors"
+                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-300"
                                data-page="board">
                                 <i data-lucide="kanban" class="w-5 h-5 mr-3"></i>
                                 Board
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#team" 
+                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-300"
+                               data-page="team">
+                                <i data-lucide="users" class="w-5 h-5 mr-3"></i>
+                                Team
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#epics" 
+                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-300"
+                               data-page="epics">
+                                <i data-lucide="folder-kanban" class="w-5 h-5 mr-3"></i>
+                                Epics
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#dashboard" 
+                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-300"
+                               data-page="dashboard">
+                                <i data-lucide="chart-line" class="w-5 h-5 mr-3"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#roadmap" 
+                               class="nav-link flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-300"
+                               data-page="roadmap">
+                                <i data-lucide="calendar-range" class="w-5 h-5 mr-3"></i>
+                                Roadmap
                             </a>
                         </li>
                     </ul>
                 </div>
             </nav>
 
-            <!-- Dark mode toggle -->
+            <!-- Enhanced Dark mode toggle -->
             <div class="absolute bottom-6 left-6">
                 <button id="darkModeToggle" 
-                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        aria-label="Toggle dark mode"
+                        title="Toggle dark mode (Ctrl+Shift+D)">
                     <i data-lucide="moon" class="w-5 h-5 mr-3"></i>
-                    Dark Mode
+                    <span class="theme-text">Dark Mode</span>
                 </button>
             </div>
         </aside>
@@ -53,19 +87,19 @@
         <!-- Main content -->
         <main class="flex-1 overflow-hidden">
             <!-- Header -->
-            <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+            <header class="border-b px-6 py-4 transition-all duration-300">
                 <div class="flex items-center justify-between">
-                    <h2 id="pageTitle" class="text-xl font-semibold text-gray-900 dark:text-white">Backlog</h2>
+                    <h2 id="pageTitle" class="text-xl font-semibold transition-colors duration-300">Backlog</h2>
                     <div class="flex items-center space-x-4">
                         <div class="relative">
                             <input type="text" 
                                    id="searchInput"
                                    placeholder="Search tasks..." 
-                                   class="w-64 px-4 py-2 pl-10 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-gray-400"></i>
+                                   class="w-64 px-4 py-2 pl-10 text-sm border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 transition-colors duration-300"></i>
                         </div>
                         <button id="addTaskBtn" 
-                                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors">
+                                class="inline-flex items-center px-4 py-2 text-white text-sm font-medium rounded-md transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2">
                             <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
                             Add Task
                         </button>
@@ -74,69 +108,302 @@
             </header>
 
             <!-- Page content -->
-            <div id="pageContent" class="h-full overflow-auto p-6">
+            <div id="pageContent" class="h-full overflow-auto p-6 transition-all duration-300">
                 <!-- Content will be dynamically loaded here -->
             </div>
         </main>
     </div>
 
     <!-- Task Modal -->
-    <div id="taskModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div id="taskModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 transition-opacity duration-300">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 id="modalTitle" class="text-lg font-medium text-gray-900 dark:text-white">Add New Task</h3>
+            <div class="rounded-lg shadow-xl w-full max-w-2xl transition-all duration-300 transform">
+                <div class="px-6 py-4 border-b transition-colors duration-300">
+                    <h3 id="modalTitle" class="text-lg font-medium transition-colors duration-300">Add New Task</h3>
                 </div>
                 <form id="taskForm" class="px-6 py-4">
                     <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
-                            <input type="text" 
-                                   id="taskTitle" 
-                                   required
-                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
-                            <textarea id="taskDescription" 
-                                      rows="3"
-                                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                        </div>
                         <div class="grid grid-cols-3 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">ID</label>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Title</label>
+                                <input type="text" 
+                                       id="taskTitle" 
+                                       required
+                                       class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Work Item Type</label>
+                                <select id="taskItemType" 
+                                        required
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    <option value="">Select Type</option>
+                                    <option value="epic">Epic</option>
+                                    <option value="story">User Story</option>
+                                    <option value="task">Task</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Assignee</label>
+                                <select id="taskAssignee" 
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 transition-colors duration-300">Description</label>
+                            <textarea id="taskDescription" 
+                                      rows="3"
+                                      class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2"></textarea>
+                        </div>
+                        <div class="grid grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">ID</label>
                                 <input type="text" 
                                        id="taskId" 
                                        placeholder="Auto-generated"
                                        readonly
-                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                       class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Priority</label>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Priority</label>
                                 <select id="taskPriority" 
-                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
                                     <option value="low">Low</option>
                                     <option value="medium">Medium</option>
                                     <option value="high">High</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Due Date</label>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Start Date</label>
+                                <input type="date" 
+                                       id="taskStartDate"
+                                       class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Due Date</label>
                                 <input type="date" 
                                        id="taskDueDate"
-                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                       class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
                             </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Epic</label>
+                                <select id="taskEpic" 
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Size</label>
+                                <select id="taskSize" 
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="5">5</option>
+                                    <option value="8">8</option>
+                                    <option value="13">13</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Status</label>
+                                <select id="taskStatus" 
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    <option value="todo">To Do</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Effort (hours)</label>
+                                <input type="number" min="0" step="0.5" id="taskEffort" class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Capacity (hours)</label>
+                                <input type="number" min="0" step="0.5" id="taskCapacity" class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 transition-colors duration-300">Comments</label>
+                            <textarea id="taskCommentsInput" rows="2" placeholder="Add a comment..." class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2"></textarea>
+                            <div id="taskCommentsList" class="mt-2 space-y-2"></div>
                         </div>
                     </div>
                     <div class="flex justify-end space-x-3 mt-6">
                         <button type="button" 
                                 id="cancelTaskBtn"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                                class="px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2">
                             Cancel
                         </button>
                         <button type="submit" 
-                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors">
-                            Save Task
+                                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md transition-all duration-300 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Member Modal -->
+    <div id="teamMemberModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="rounded-lg shadow-xl w-full max-w-md transition-all duration-300 transform">
+                <div class="px-6 py-4 border-b transition-colors duration-300">
+                    <h3 class="text-lg font-medium transition-colors duration-300">Add Team Member</h3>
+                </div>
+                <form id="teamMemberForm" class="px-6 py-4">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1 transition-colors duration-300">Name</label>
+                            <input type="text" 
+                                   id="memberName" 
+                                   required
+                                   placeholder="Enter team member name"
+                                   class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 transition-colors duration-300">Email</label>
+                            <input type="email" 
+                                   id="memberEmail" 
+                                   required
+                                   placeholder="Enter team member email"
+                                   class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" 
+                                id="cancelTeamMemberBtn"
+                                class="px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md transition-all duration-300 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            Add Member
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Epic Modal -->
+    <div id="epicModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="rounded-lg shadow-xl w-full max-w-2xl transition-all duration-300 transform">
+                <div class="px-6 py-4 border-b transition-colors duration-300">
+                    <h3 id="epicModalTitle" class="text-lg font-medium transition-colors duration-300">Add New Epic</h3>
+                </div>
+                <form id="epicForm" class="px-6 py-4">
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Epic ID</label>
+                                <input type="text" 
+                                       id="epicId" 
+                                       placeholder="Auto-generated"
+                                       readonly
+                                       class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Status</label>
+                                <select id="epicStatus" 
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    <option value="new">New</option>
+                                    <option value="active">Active</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 transition-colors duration-300">Title</label>
+                            <input type="text" 
+                                   id="epicTitle" 
+                                   required
+                                   placeholder="Enter epic title"
+                                   class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 transition-colors duration-300">Description</label>
+                            <textarea id="epicDescription" 
+                                      rows="3"
+                                      placeholder="Enter epic description"
+                                      class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 transition-colors duration-300">Acceptance Criteria</label>
+                            <textarea id="epicAcceptanceCriteria" 
+                                      rows="3"
+                                      placeholder="Enter acceptance criteria"
+                                      class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2"></textarea>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Owner</label>
+                                <select id="epicOwner" 
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    <option value="">Select Owner</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Priority</label>
+                                <select id="epicPriority" 
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Size</label>
+                                <select id="epicSize" 
+                                        class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="5">5</option>
+                                    <option value="8">8</option>
+                                    <option value="13">13</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Start Date</label>
+                                <input type="date" 
+                                       id="epicStartDate"
+                                       class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">End Date</label>
+                                <input type="date" 
+                                       id="epicEndDate"
+                                       class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Estimated Effort (hours)</label>
+                                <input type="number" min="0" step="0.5" id="epicEstimatedEffort" class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 transition-colors duration-300">Actual Effort (hours)</label>
+                                <input type="number" min="0" step="0.5" id="epicActualEffort" class="w-full px-3 py-2 border rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" 
+                                id="cancelEpicBtn"
+                                class="px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md transition-all duration-300 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            Save Epic
                         </button>
                     </div>
                 </form>

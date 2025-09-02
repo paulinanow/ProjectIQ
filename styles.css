@@ -1,42 +1,220 @@
-/* Custom styles for ProjectIQ Task Manager */
-
-/* Smooth transitions */
-* {
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+/* CSS Variables for Theme System */
+:root {
+    /* Light Theme Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+    
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-tertiary: #6b7280;
+    --text-muted: #9ca3af;
+    
+    --border-primary: #e5e7eb;
+    --border-secondary: #d1d5db;
+    --border-focus: #3b82f6;
+    
+    --accent-primary: #3b82f6;
+    --accent-secondary: #1d4ed8;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    
+    --ring-offset: #ffffff;
+    --ring-color: #3b82f6;
+    
+    /* Priority Colors */
+    --priority-low-bg: #dcfce7;
+    --priority-low-text: #166534;
+    --priority-medium-bg: #fef3c7;
+    --priority-medium-text: #92400e;
+    --priority-high-bg: #fee2e2;
+    --priority-high-text: #991b1b;
+    
+    /* Status Colors */
+    --status-todo-bg: #f3f4f6;
+    --status-todo-text: #374151;
+    --status-in-progress-bg: #dbeafe;
+    --status-in-progress-text: #1d4ed8;
+    --status-done-bg: #dcfce7;
+    --status-done-text: #166534;
+    
+    /* Transition timing */
+    --transition-fast: 150ms ease-in-out;
+    --transition-normal: 300ms ease-in-out;
+    --transition-slow: 500ms ease-in-out;
 }
 
-/* Navigation link styles */
+/* Dark Theme Colors */
+[data-theme="dark"] {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --bg-overlay: rgba(0, 0, 0, 0.7);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #e6edf3;
+    --text-tertiary: #8b949e;
+    --text-muted: #6e7681;
+    
+    --border-primary: #30363d;
+    --border-secondary: #21262d;
+    --border-focus: #58a6ff;
+    
+    --accent-primary: #58a6ff;
+    --accent-secondary: #1f6feb;
+    --accent-success: #238636;
+    --accent-warning: #d29922;
+    --accent-danger: #da3633;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    
+    --ring-offset: #0d1117;
+    --ring-color: #58a6ff;
+    
+    /* Priority Colors - Dark */
+    --priority-low-bg: #0d1117;
+    --priority-low-text: #7ee787;
+    --priority-medium-bg: #0d1117;
+    --priority-medium-text: #fbb040;
+    --priority-high-bg: #0d1117;
+    --priority-high-text: #ff7b72;
+    
+    /* Status Colors - Dark */
+    --status-todo-bg: #21262d;
+    --status-todo-text: #8b949e;
+    --status-in-progress-bg: #1f6feb;
+    --status-in-progress-text: #58a6ff;
+    --status-done-bg: #238636;
+    --status-done-text: #7ee787;
+}
+
+/* Global Styles with CSS Variables */
+* {
+    transition: background-color var(--transition-normal), 
+                border-color var(--transition-normal), 
+                color var(--transition-normal),
+                box-shadow var(--transition-normal);
+}
+
+body {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Layout Components */
+#app {
+    background-color: var(--bg-secondary);
+}
+
+aside {
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+}
+
+header {
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+}
+
+#pageContent {
+    background-color: var(--bg-secondary);
+}
+
+/* Navigation Styles */
 .nav-link {
-    color: #6b7280;
+    color: var(--text-tertiary);
     text-decoration: none;
+    transition: all var(--transition-normal);
 }
 
 .nav-link:hover {
-    background-color: #f3f4f6;
-    color: #111827;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 .nav-link.active {
-    background-color: #dbeafe;
-    color: #1d4ed8;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
 }
 
-/* Dark mode navigation styles */
-.dark .nav-link {
-    color: #9ca3af;
+/* Theme Toggle Button */
+#darkModeToggle {
+    color: var(--text-secondary);
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
 }
 
-.dark .nav-link:hover {
-    background-color: #374151;
-    color: #f9fafb;
+#darkModeToggle:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transform: scale(1.05);
 }
 
-.dark .nav-link.active {
-    background-color: #1e3a8a;
-    color: #60a5fa;
+#darkModeToggle:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: var(--ring-color);
+    ring-offset: 2px;
+    ring-offset-color: var(--ring-offset);
 }
 
-/* Priority badge styles */
+/* Form Elements */
+input, select, textarea {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    ring: 2px;
+    ring-color: var(--ring-color);
+    ring-offset: 2px;
+    ring-offset-color: var(--ring-offset);
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--text-muted);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+    border: none;
+    transition: all var(--transition-normal);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-secondary);
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-primary);
+    transition: all var(--transition-normal);
+}
+
+.btn-secondary:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+/* Priority Badge Styles */
 .priority-badge {
     padding: 0.25rem 0.5rem;
     border-radius: 0.375rem;
@@ -47,37 +225,21 @@
 }
 
 .priority-low {
-    background-color: #dcfce7;
-    color: #166534;
+    background-color: var(--priority-low-bg);
+    color: var(--priority-low-text);
 }
 
 .priority-medium {
-    background-color: #fef3c7;
-    color: #92400e;
+    background-color: var(--priority-medium-bg);
+    color: var(--priority-medium-text);
 }
 
 .priority-high {
-    background-color: #fee2e2;
-    color: #991b1b;
+    background-color: var(--priority-high-bg);
+    color: var(--priority-high-text);
 }
 
-/* Dark mode priority badges */
-.dark .priority-low {
-    background-color: #064e3b;
-    color: #6ee7b7;
-}
-
-.dark .priority-medium {
-    background-color: #78350f;
-    color: #fbbf24;
-}
-
-.dark .priority-high {
-    background-color: #7f1d1d;
-    color: #fca5a5;
-}
-
-/* Status badge styles */
+/* Status Badge Styles */
 .status-badge {
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
@@ -86,110 +248,142 @@
 }
 
 .status-todo {
-    background-color: #f3f4f6;
-    color: #374151;
+    background-color: var(--status-todo-bg);
+    color: var(--status-todo-text);
 }
 
 .status-in-progress {
-    background-color: #dbeafe;
-    color: #1d4ed8;
+    background-color: var(--status-in-progress-bg);
+    color: var(--status-in-progress-text);
 }
 
 .status-done {
-    background-color: #dcfce7;
-    color: #166534;
+    background-color: var(--status-done-bg);
+    color: var(--status-done-text);
 }
 
-/* Dark mode status badges */
-.dark .status-todo {
-    background-color: #374151;
-    color: #d1d5db;
-}
-
-.dark .status-in-progress {
-    background-color: #1e3a8a;
-    color: #60a5fa;
-}
-
-.dark .status-done {
-    background-color: #064e3b;
-    color: #6ee7b7;
-}
-
-/* Task card styles */
+/* Task Card Styles */
 .task-card {
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    padding: 1rem;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
     margin-bottom: 0.75rem;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal);
+    cursor: grab;
+    box-shadow: var(--shadow-sm);
 }
 
 .task-card:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 
-/* Dark mode task cards */
-.dark .task-card {
-    background-color: #1f2937;
-    border-color: #374151;
-}
-
-/* Kanban column styles */
-.kanban-column {
-    background-color: #f9fafb;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    min-height: 500px;
-}
-
-.dark .kanban-column {
-    background-color: #111827;
-}
-
-/* Drag and drop styles */
 .task-card.dragging {
     opacity: 0.5;
     transform: rotate(5deg);
 }
 
+/* Kanban Column Styles */
+.kanban-column {
+    background-color: var(--bg-tertiary);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    min-height: 520px;
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-sm);
+}
+
 .kanban-column.drag-over {
-    background-color: #dbeafe;
-    border: 2px dashed #3b82f6;
+    background-color: var(--accent-primary);
+    border: 2px dashed var(--accent-secondary);
+    opacity: 0.8;
 }
 
-.dark .kanban-column.drag-over {
-    background-color: #1e3a8a;
-    border-color: #60a5fa;
+/* Modal Styles */
+#taskModal {
+    background-color: var(--bg-overlay);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .sidebar {
-        position: fixed;
-        left: -100%;
-        transition: left 0.3s ease;
-        z-index: 40;
-    }
-    
-    .sidebar.open {
-        left: 0;
-    }
-    
-    .main-content {
-        margin-left: 0;
-    }
+#taskModal > div > div {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-lg);
 }
 
-/* Loading animation */
+/* Table Styles */
+table {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+thead {
+    background-color: var(--bg-tertiary);
+}
+
+th {
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-primary);
+}
+
+td {
+    border-bottom: 1px solid var(--border-primary);
+    color: var(--text-primary);
+}
+
+/* Assignee Chip */
+.assignee-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Icons */
+i[data-lucide] {
+    color: var(--text-secondary);
+    transition: color var(--transition-normal);
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Focus Styles for Accessibility */
+*:focus {
+    outline: 2px solid var(--ring-color);
+    outline-offset: 2px;
+}
+
+/* Loading Animation */
 .loading {
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #3b82f6;
+    border: 3px solid var(--bg-tertiary);
+    border-top: 3px solid var(--accent-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -199,49 +393,48 @@
     100% { transform: rotate(360deg); }
 }
 
-/* ID field styling */
-#taskId {
-    font-family: 'Courier New', monospace;
-    font-size: 0.875rem;
+/* Responsive Design */
+@media (max-width: 768px) {
+    aside {
+        position: fixed;
+        left: -100%;
+        transition: left var(--transition-normal);
+        z-index: 40;
+    }
+    
+    aside.open {
+        left: 0;
+    }
 }
 
-/* Task ID display */
-.task-id {
-    font-family: 'Courier New', monospace;
-    font-size: 0.75rem;
-    color: #6b7280;
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --border-primary: #000000;
+        --text-primary: #000000;
+        --bg-primary: #ffffff;
+    }
+    
+    [data-theme="dark"] {
+        --border-primary: #ffffff;
+        --text-primary: #ffffff;
+        --bg-primary: #000000;
+    }
 }
 
-.dark .task-id {
-    color: #9ca3af;
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
-}
-
-.dark ::-webkit-scrollbar-track {
-    background: #374151;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-    background: #6b7280;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-    background: #9ca3af;
+/* Print Styles */
+@media print {
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
 }
