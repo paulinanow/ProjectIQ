@@ -2,6 +2,8 @@
 
 A modern, responsive task management web application built with vanilla JavaScript, Tailwind CSS, and Lucide icons. Features a clean, professional design with dark mode support and intuitive user experience.
 
+[View ProjectIQ](https://black-desert-073debf03.2.azurestaticapps.net)
+
 ## ✨ Features
 
 ### Core Functionality
