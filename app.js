@@ -46,10 +46,6 @@ class TaskManager {
             this.renderTasks();
         });
 
-        // Add task button
-        document.getElementById('addTaskBtn').addEventListener('click', () => {
-            this.openTaskModal();
-        });
 
         // Task modal
         document.getElementById('taskForm').addEventListener('submit', (e) => {
@@ -121,6 +117,8 @@ class TaskManager {
             const editEpicBtn = e.target.closest('[data-action="edit-epic"]');
             const cloneEpicBtn = e.target.closest('[data-action="clone-epic"]');
             const delEpicBtn = e.target.closest('[data-action="delete-epic"]');
+            const editMemberBtn = e.target.closest('[data-action="edit-member"]');
+            const removeMemberBtn = e.target.closest('[data-action="remove-member"]');
             
             if (editBtn) {
                 e.preventDefault();
@@ -147,6 +145,16 @@ class TaskManager {
                 e.stopPropagation();
                 const id = Number(delEpicBtn.getAttribute('data-id'));
                 if (!Number.isNaN(id)) this.deleteEpic(id);
+            } else if (editMemberBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const id = Number(editMemberBtn.getAttribute('data-id'));
+                if (!Number.isNaN(id)) this.openTeamMemberModal(id);
+            } else if (removeMemberBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const id = Number(removeMemberBtn.getAttribute('data-id'));
+                if (!Number.isNaN(id)) this.removeMember(id);
             }
         });
     }
@@ -201,9 +209,9 @@ class TaskManager {
             <div class="space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-semibold">Backlog Items</h3>
-                    <button id="addBacklogItemBtn" class="btn-primary">
-                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
-                        Add Task
+                    <button id="addBacklogItemBtn" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white text-sm font-semibold rounded-lg shadow-lg transition-all duration-300 hover:from-green-700 hover:to-green-800 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform active:scale-95">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>
+                        Add New Task
                     </button>
                 </div>
                 
@@ -241,7 +249,7 @@ class TaskManager {
 
     renderTaskRow(task) {
         const assignee = task.assignee ? this.getMemberName(task.assignee) : 'Unassigned';
-        const assigneeInitials = task.assignee ? this.getMemberInitials(task.assignee) : 'U';
+        const assigneeInitials = task.assignee ? this.getMemberInitials(this.getMemberName(task.assignee)) : 'U';
         const itemType = task.itemType || 'task';
         
         return `
@@ -324,7 +332,7 @@ class TaskManager {
 
     renderTaskCard(task) {
         const assignee = task.assignee ? this.getMemberName(task.assignee) : 'Unassigned';
-        const assigneeInitials = task.assignee ? this.getMemberInitials(task.assignee) : 'U';
+        const assigneeInitials = task.assignee ? this.getMemberInitials(this.getMemberName(task.assignee)) : 'U';
         const itemTypeBadge = task.itemType === 'story' ? 'Story' : 'Task';
         
         return `
@@ -359,10 +367,9 @@ class TaskManager {
     renderTeamView() {
         return `
             <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold transition-colors duration-300">Team Management</h2>
-                    <button id="addMemberBtn" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md transition-all duration-300 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2">
-                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                <div class="flex justify-end items-center mb-6">
+                    <button id="addMemberBtn" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold rounded-lg shadow-lg transition-all duration-300 hover:from-blue-700 hover:to-blue-800 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform active:scale-95">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>
                         Add New Team Member
                     </button>
                 </div>
@@ -372,7 +379,7 @@ class TaskManager {
                         <div class="p-4 rounded-lg border transition-all duration-300 hover:shadow-md">
                             <div class="flex items-center justify-between mb-3">
                                 <div class="flex items-center space-x-3">
-                                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium transition-colors duration-300">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold transition-all duration-300 bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg">
                                         ${this.getMemberInitials(member.name)}
                                     </div>
                                     <div>
@@ -381,19 +388,15 @@ class TaskManager {
                                     </div>
                                 </div>
                                 <div class="flex space-x-2">
-                                    <button onclick="taskManager.openTeamMemberModal(${member.id})" 
-                                            class="p-1 rounded transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                                    <button data-action="edit-member" data-id="${member.id}" 
+                                            class="p-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-600 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                             title="Edit member">
-                                        <svg class="w-4 h-4 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
+                                        <i data-lucide="edit-3" class="w-4 h-4"></i>
                                     </button>
-                                    <button onclick="taskManager.removeMember(${member.id})" 
-                                            class="p-1 rounded transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                                    <button data-action="remove-member" data-id="${member.id}" 
+                                            class="p-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-600 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                                             title="Remove member">
-                                        <svg class="w-4 h-4 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
@@ -416,73 +419,120 @@ class TaskManager {
     }
 
     renderEpicsView() {
-        const newEpics = this.epics.filter(epic => epic.status === 'new');
-        const activeEpics = this.epics.filter(epic => epic.status === 'active');
-        const inProgressEpics = this.epics.filter(epic => epic.status === 'in-progress');
-        const doneEpics = this.epics.filter(epic => epic.status === 'done');
-
+        const filteredEpics = this.getFilteredEpics();
+        
         return `
             <div class="space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-semibold">Epic Management</h3>
-                    <button id="addEpicBtn" class="btn-primary">
-                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
-                        Add Epic
+                    <button id="addEpicBtn" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white text-sm font-semibold rounded-lg shadow-lg transition-all duration-300 hover:from-purple-700 hover:to-purple-800 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform active:scale-95">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>
+                        Add New Epic
                     </button>
                 </div>
-
-                <!-- Epic Board View -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <!-- New Epics -->
-                    <div class="epic-column" data-status="new">
-                        <div class="column-header">
-                            <h4 class="text-md font-semibold mb-2">New</h4>
-                            <span class="column-count bg-tertiary text-secondary px-2 py-1 rounded-full text-xs">${newEpics.length}</span>
-                        </div>
-                        <div class="epic-list">
-                            ${newEpics.map(epic => this.renderEpicCard(epic)).join('')}
-                            ${newEpics.length === 0 ? '<div class="empty-drop-hint">Drop epics here</div>' : ''}
+                
+                ${filteredEpics.length === 0 ? `
+                    <div class="text-center py-12">
+                        <i data-lucide="folder-kanban" class="w-16 h-16 mx-auto mb-4"></i>
+                        <h3 class="text-lg font-medium mb-2">No epics found</h3>
+                        <p class="text-muted">${this.searchTerm ? 'Try adjusting your search terms.' : 'Get started by creating your first epic.'}</p>
+                    </div>
+                ` : `
+                    <div class="rounded-lg shadow">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y">
+                                <thead>
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Title</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Owner</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Priority</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Progress</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Tasks</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y">
+                                    ${filteredEpics.map(epic => this.renderEpicRow(epic)).join('')}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
-                    <!-- Active Epics -->
-                    <div class="epic-column" data-status="active">
-                        <div class="column-header">
-                            <h4 class="text-md font-semibold mb-2">Active</h4>
-                            <span class="column-count bg-tertiary text-secondary px-2 py-1 rounded-full text-xs">${activeEpics.length}</span>
-                        </div>
-                        <div class="epic-list">
-                            ${activeEpics.map(epic => this.renderEpicCard(epic)).join('')}
-                            ${activeEpics.length === 0 ? '<div class="empty-drop-hint">Drop epics here</div>' : ''}
-                        </div>
-                    </div>
-
-                    <!-- In Progress Epics -->
-                    <div class="epic-column" data-status="in-progress">
-                        <div class="column-header">
-                            <h4 class="text-md font-semibold mb-2">In Progress</h4>
-                            <span class="column-count bg-tertiary text-secondary px-2 py-1 rounded-full text-xs">${inProgressEpics.length}</span>
-                        </div>
-                        <div class="epic-list">
-                            ${inProgressEpics.map(epic => this.renderEpicCard(epic)).join('')}
-                            ${inProgressEpics.length === 0 ? '<div class="empty-drop-hint">Drop epics here</div>' : ''}
-                        </div>
-                    </div>
-
-                    <!-- Done Epics -->
-                    <div class="epic-column" data-status="done">
-                        <div class="column-header">
-                            <h4 class="text-md font-semibold mb-2">Done</h4>
-                            <span class="column-count bg-tertiary text-secondary px-2 py-1 rounded-full text-xs">${doneEpics.length}</span>
-                        </div>
-                        <div class="epic-list">
-                            ${doneEpics.map(epic => this.renderEpicCard(epic)).join('')}
-                            ${doneEpics.length === 0 ? '<div class="empty-drop-hint">Drop epics here</div>' : ''}
-                        </div>
-                    </div>
-                                 </div>
-             </div>
+                `}
+            </div>
         `;
+    }
+    
+    renderEpicRow(epic) {
+        const owner = epic.owner ? this.getMemberName(epic.owner) : 'Unassigned';
+        const ownerInitials = epic.owner ? this.getMemberInitials(this.getMemberName(epic.owner)) : 'U';
+        const linkedTasks = this.tasks.filter(task => task.epicId === epic.id);
+        const completedTasks = linkedTasks.filter(task => task.status === 'done').length;
+        const progressPercentage = linkedTasks.length > 0 ? Math.round((completedTasks / linkedTasks.length) * 100) : 0;
+        const epicId = `EPIC-${epic.id.toString().padStart(3, '0')}`;
+        
+        return `
+            <tr class="hover:bg-tertiary transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-mono">${epicId}</td>
+                <td class="px-6 py-4">
+                    <div class="text-sm font-medium cursor-pointer hover:text-accent-primary transition-colors" onclick="taskManager.openEpicModal(${epic.id})">${epic.title}</div>
+                    <div class="text-sm text-muted">${epic.description ? epic.description.substring(0, 50) + '...' : 'No description'}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="status-badge status-${epic.status}">${epic.status}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="assignee-chip mr-2">${ownerInitials}</div>
+                        <span class="text-sm">${owner}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="priority-badge priority-${epic.priority || 'medium'}">${epic.priority || 'medium'}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-16 bg-gray-200 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-500" style="width: ${progressPercentage}%"></div>
+                        </div>
+                        <span class="text-xs text-muted">${progressPercentage}%</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center space-x-1">
+                        <span class="text-sm font-medium">${linkedTasks.length}</span>
+                        <span class="text-xs text-muted">(${completedTasks} done)</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button data-action="edit-epic" data-id="${epic.id}" class="mr-2 hover:text-accent-primary transition-colors" title="Edit Epic">
+                        <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    </button>
+                    <button data-action="clone-epic" data-id="${epic.id}" class="mr-2 hover:text-blue-600 transition-colors" title="Clone Epic">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                    <button data-action="delete-epic" data-id="${epic.id}" class="hover:text-accent-danger transition-colors" title="Delete Epic">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }
+    
+    getFilteredEpics() {
+        let filtered = this.epics;
+        
+        if (this.searchTerm) {
+            const searchLower = this.searchTerm.toLowerCase();
+            filtered = filtered.filter(epic => 
+                epic.title.toLowerCase().includes(searchLower) ||
+                epic.description?.toLowerCase().includes(searchLower) ||
+                epic.id.toString().includes(searchLower)
+            );
+        }
+        
+        return filtered;
     }
 
     renderEpicCard(epic) {
@@ -632,42 +682,192 @@ class TaskManager {
 
     renderRoadmapView() {
         const allItems = [...this.epics, ...this.tasks];
+        const todoItems = allItems.filter(item => item.status === 'todo');
+        const inProgressItems = allItems.filter(item => item.status === 'in-progress');
+        const doneItems = allItems.filter(item => item.status === 'done');
+        
+        const totalItems = allItems.length;
+        const completedItems = doneItems.length;
+        const progressPercentage = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
         
         return `
             <div class="space-y-6">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold">Roadmap</h3>
-                    <button id="addRoadmapItemBtn" class="btn-primary">
-                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold">Project Roadmap</h3>
+                        <p class="text-sm text-muted">Track your project progress and timeline</p>
+                    </div>
+                    <button id="addRoadmapItemBtn" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white text-sm font-semibold rounded-lg shadow-lg transition-all duration-300 hover:from-purple-700 hover:to-purple-800 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform active:scale-95">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i>
                         Add Item
                     </button>
                 </div>
                 
-                <div class="rounded-lg border p-6">
-                    <div class="space-y-4">
-                        ${allItems.map(item => `
-                            <div class="flex items-center space-x-4 p-3 rounded-lg border hover:bg-tertiary transition-colors">
-                                <div class="flex-shrink-0">
-                                    <span class="text-xs font-mono text-muted">#${item.id}</span>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="font-medium">${item.title}</h4>
-                                    <p class="text-sm text-muted">${item.description || 'No description'}</p>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="status-badge status-${item.status}">${item.status}</span>
-                                    <span class="priority-badge priority-${item.priority}">${item.priority}</span>
-                                </div>
+                <!-- Progress Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-4 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-100 text-sm">Total Items</p>
+                                <p class="text-2xl font-bold">${totalItems}</p>
                             </div>
-                        `).join('')}
+                            <i data-lucide="list" class="w-8 h-8 text-blue-200"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-lg p-4 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-yellow-100 text-sm">To Do</p>
+                                <p class="text-2xl font-bold">${todoItems.length}</p>
+                            </div>
+                            <i data-lucide="clock" class="w-8 h-8 text-yellow-200"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg p-4 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-orange-100 text-sm">In Progress</p>
+                                <p class="text-2xl font-bold">${inProgressItems.length}</p>
+                            </div>
+                            <i data-lucide="play-circle" class="w-8 h-8 text-orange-200"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-4 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-100 text-sm">Completed</p>
+                                <p class="text-2xl font-bold">${doneItems.length}</p>
+                            </div>
+                            <i data-lucide="check-circle" class="w-8 h-8 text-green-200"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Overall Progress Bar -->
+                <div class="bg-white rounded-lg border p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-semibold">Overall Progress</h4>
+                        <span class="text-2xl font-bold text-green-600">${progressPercentage}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+                        <div class="bg-gradient-to-r from-green-500 to-green-600 h-4 rounded-full transition-all duration-1000 ease-out" style="width: ${progressPercentage}%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-muted">
+                        <span>${completedItems} of ${totalItems} items completed</span>
+                        <span>${totalItems - completedItems} remaining</span>
+                    </div>
+                </div>
+                
+                <!-- Timeline Roadmap -->
+                <div class="space-y-6">
+                    <h4 class="font-semibold text-lg">Project Timeline</h4>
+                    
+                    ${allItems.length === 0 ? `
+                        <div class="text-center py-12">
+                            <i data-lucide="calendar-range" class="w-16 h-16 mx-auto mb-4 text-muted"></i>
+                            <h3 class="text-lg font-medium mb-2">No roadmap items</h3>
+                            <p class="text-muted">Add epics and tasks to see them in your roadmap.</p>
+                        </div>
+                    ` : `
+                        <div class="relative">
+                            <!-- Timeline Line -->
+                            <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-green-500"></div>
+                            
+                            <div class="space-y-6">
+                                ${allItems.map((item, index) => this.renderRoadmapItem(item, index)).join('')}
+                            </div>
+                        </div>
+                    `}
+                </div>
+            </div>
+        `;
+    }
+    
+    renderRoadmapItem(item, index) {
+        const isEpic = item.itemType === 'epic' || this.epics.some(epic => epic.id === item.id);
+        const assignee = item.assignee ? this.getMemberName(item.assignee) : 'Unassigned';
+        const assigneeInitials = item.assignee ? this.getMemberInitials(this.getMemberName(item.assignee)) : 'U';
+        const itemType = isEpic ? 'Epic' : (item.itemType === 'story' ? 'User Story' : 'Task');
+        
+        // Calculate progress for epics
+        let progressPercentage = 0;
+        if (isEpic) {
+            const linkedTasks = this.tasks.filter(task => task.epicId === item.id);
+            const completedTasks = linkedTasks.filter(task => task.status === 'done').length;
+            progressPercentage = linkedTasks.length > 0 ? Math.round((completedTasks / linkedTasks.length) * 100) : 0;
+        } else {
+            // For tasks, show progress based on status
+            progressPercentage = item.status === 'done' ? 100 : item.status === 'in-progress' ? 50 : 0;
+        }
+        
+        // Status colors
+        const statusColors = {
+            'todo': 'from-gray-400 to-gray-500',
+            'in-progress': 'from-blue-400 to-blue-500',
+            'done': 'from-green-400 to-green-500',
+            'new': 'from-purple-400 to-purple-500',
+            'active': 'from-orange-400 to-orange-500'
+        };
+        
+        const statusColor = statusColors[item.status] || 'from-gray-400 to-gray-500';
+        
+        return `
+            <div class="relative flex items-start space-x-6">
+                <!-- Timeline Dot -->
+                <div class="relative z-10 flex-shrink-0">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r ${statusColor} flex items-center justify-center text-white font-bold shadow-lg">
+                        <i data-lucide="${isEpic ? 'folder' : 'check-circle'}" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                
+                <!-- Content Card -->
+                <div class="flex-1 bg-white rounded-lg border shadow-sm hover:shadow-md transition-all duration-300 p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <span class="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded-full">${itemType}</span>
+                                <span class="text-xs font-mono text-muted">#${item.id}</span>
+                                <span class="status-badge status-${item.status}">${item.status}</span>
+                                <span class="priority-badge priority-${item.priority || 'medium'}">${item.priority || 'medium'}</span>
+                            </div>
+                            <h4 class="text-lg font-semibold mb-2">${item.title}</h4>
+                            <p class="text-muted mb-4">${item.description || 'No description available'}</p>
+                        </div>
                         
-                        ${allItems.length === 0 ? `
-                            <div class="text-center py-12">
-                                <i data-lucide="calendar-range" class="w-16 h-16 mx-auto mb-4 text-muted"></i>
-                                <h3 class="text-lg font-medium mb-2">No roadmap items</h3>
-                                <p class="text-muted">Add epics and tasks to see them in your roadmap.</p>
-                            </div>
-                        ` : ''}
+                        <!-- Assignee -->
+                        <div class="flex items-center space-x-2 ml-4">
+                            <div class="assignee-chip">${assigneeInitials}</div>
+                            <span class="text-sm text-muted">${assignee}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium">Progress</span>
+                            <span class="text-sm font-bold text-green-600">${progressPercentage}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-1000 ease-out" style="width: ${progressPercentage}%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Info -->
+                    <div class="flex items-center justify-between text-sm text-muted">
+                        <div class="flex items-center space-x-4">
+                            ${item.dueDate ? `<span><i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>Due: ${item.dueDate}</span>` : ''}
+                            ${item.effort ? `<span><i data-lucide="clock" class="w-4 h-4 inline mr-1"></i>${item.effort}h</span>` : ''}
+                            ${isEpic && this.tasks.filter(task => task.epicId === item.id).length > 0 ? 
+                                `<span><i data-lucide="list" class="w-4 h-4 inline mr-1"></i>${this.tasks.filter(task => task.epicId === item.id).length} tasks</span>` : ''}
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button data-action="edit-task" data-id="${item.id}" class="p-1 hover:bg-gray-100 rounded transition-colors" title="Edit">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
+                            <button data-action="delete-task" data-id="${item.id}" class="p-1 hover:bg-gray-100 rounded transition-colors" title="Delete">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -830,7 +1030,7 @@ class TaskManager {
             capacity: document.getElementById('taskCapacity').value,
             size: document.getElementById('taskSize').value,
             itemType: document.getElementById('taskItemType').value,
-            assignee: document.getElementById('taskAssignee').value,
+            assignee: document.getElementById('taskAssignee').value ? parseInt(document.getElementById('taskAssignee').value) : null,
             epicId: document.getElementById('taskEpic').value
         };
 
@@ -1139,7 +1339,9 @@ class TaskManager {
     }
 
     getMemberName(memberId) {
+        console.log('Looking for member with ID:', memberId, 'Available members:', this.teamMembers);
         const member = this.teamMembers.find(m => m.id === memberId);
+        console.log('Found member:', member);
         return member ? member.name : 'Unknown';
     }
 
@@ -1156,14 +1358,22 @@ class TaskManager {
 
     populateAssigneeDropdown() {
         const select = document.getElementById('taskAssignee');
-        select.innerHTML = '<option value="">Select Assignee</option>';
+        select.innerHTML = '<option value="">Select Team Member</option>';
         
-        this.teamMembers.forEach(member => {
+        if (this.teamMembers.length === 0) {
             const option = document.createElement('option');
-            option.value = member.id;
-            option.textContent = member.name;
+            option.value = '';
+            option.textContent = 'No team members available - Add team members first';
+            option.disabled = true;
             select.appendChild(option);
-        });
+        } else {
+            this.teamMembers.forEach(member => {
+                const option = document.createElement('option');
+                option.value = member.id;
+                option.textContent = member.name;
+                select.appendChild(option);
+            });
+        }
     }
 
     populateEpicDropdown() {
